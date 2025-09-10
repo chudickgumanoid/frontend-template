@@ -2,12 +2,12 @@ export const APP_NAME_PLACEHOLDER = '__APP_NAME__';
 
 export const UI = {
   bannerTitle: 'chdck',
-  bannerSubtitle: 'Vite + Vue 3 template',
+  bannerSubtitle: 'Vite + Vue 3 frontend template',
   steps: {
-    createDirs: 'Creating directories',
-    generateFiles: 'Generating files',
-    applyOptions: 'Applying options',
-    done: 'Done'
+    createDirs: '🔧 Creating directories',
+    generateFiles: '📄 Generating files',
+    applyOptions: '🛠  Applying options',
+    done: '✅ Done'
   },
   colors: {
     info: 'cyan',

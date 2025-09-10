@@ -2,7 +2,7 @@ import path from 'node:path';
 import process from 'node:process';
 import fs from 'fs-extra';
 import { getTemplatePath } from '../constants/paths.js';
-import { spinner, printInfo, printSuccess, printError } from '../ui/print.js';
+import { spinner, printFinalInstructions, printError } from '../ui/print.js';
 import { UI } from '../constants/meta.js';
 import { askProjectName, askConfirmOverwrite, askUseI18n } from '../cli/askProjectName.js';
 import { isDirEmpty, emptyDir, copyTemplateWithTransforms } from './files.js';
@@ -32,6 +32,7 @@ export default async function scaffold({ initialName, force = false } = {}) {
 
   const projectName = await askProjectName(initialName);
   const useI18n = await askUseI18n(true);
+  targetDir = path.resolve(process.cwd(), projectName);
 
   const exists = await fs.pathExists(targetDir);
   if (exists) {
@@ -104,12 +105,7 @@ export default async function scaffold({ initialName, force = false } = {}) {
   }
 
   spinner(UI.steps.done).succeed(UI.steps.done);
-
-  printSuccess('\nProject created successfully!');
-  printInfo(`\nNext steps:\n`);
-  printInfo(`  cd ${projectName}`);
-  printInfo(`  pnpm i    # install dependencies`);
-  printInfo(`  pnpm dev  # start Vite`);
+  printFinalInstructions(projectName);
 
   // Cleanup signal handlers on success
   try {

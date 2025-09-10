@@ -33,3 +33,24 @@ export function printError(message) {
   console.error(chalk.red(message));
 }
 
+export function formatCommand(cmd) {
+  return chalk.bold.cyan(cmd);
+}
+
+export function printFinalInstructions(projectName) {
+  const lines = [
+    chalk.green('✔ Project created successfully!'),
+    '',
+    chalk.white('Next steps:'),
+    `  ${formatCommand(`cd ${projectName}`)}`,
+    `  ${formatCommand('pnpm i')}  ${chalk.dim('# install dependencies')}`,
+    `  ${formatCommand('pnpm dev')} ${chalk.dim('# run dev server')}`
+  ];
+  const boxed = boxen(lines.join('\n'), {
+    padding: 1,
+    borderStyle: 'round',
+    borderColor: 'green',
+    dimBorder: true
+  });
+  console.log('\n' + boxed + '\n');
+}
