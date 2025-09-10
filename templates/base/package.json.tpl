@@ -32,7 +32,7 @@
     "tailwindcss": "^4.1.11",
     "vue": "^3.5.13",
     "vue-i18n": "^9.14.2",
-    "vue-router": "^4.5.0",
+    "vue-router": "^4.5.0"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^4.17.0",
@@ -54,4 +54,3 @@
     "vite-plugin-vue-devtools": "^7.7.7"
   }
 }
-

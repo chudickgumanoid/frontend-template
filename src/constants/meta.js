@@ -6,6 +6,7 @@ export const UI = {
   steps: {
     createDirs: 'Creating directories',
     generateFiles: 'Generating files',
+    applyOptions: 'Applying options',
     done: 'Done'
   },
   colors: {
@@ -21,6 +22,13 @@ export const PROMPTS = {
   },
   overwriteConfirm: {
     message: 'Target directory is not empty. Overwrite?'
+  },
+  useI18n: {
+    message: 'Use i18n?',
+    choices: [
+      { name: 'Yes', value: true },
+      { name: 'No', value: false }
+    ]
   }
 };
 

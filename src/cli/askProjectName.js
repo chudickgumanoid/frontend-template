@@ -32,3 +32,16 @@ export async function askConfirmOverwrite() {
   ]);
   return overwrite;
 }
+
+export async function askUseI18n(defaultValue = true) {
+  const { useI18n } = await inquirer.prompt([
+    {
+      type: 'list',
+      name: 'useI18n',
+      message: PROMPTS.useI18n.message,
+      choices: PROMPTS.useI18n.choices,
+      default: defaultValue ? 0 : 1
+    }
+  ]);
+  return useI18n;
+}
