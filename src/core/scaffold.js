@@ -2,15 +2,36 @@ import path from 'node:path';
 import process from 'node:process';
 import fs from 'fs-extra';
 import { getTemplatePath } from '../constants/paths.js';
-import { spinner, printInfo, printSuccess } from '../ui/print.js';
+import { spinner, printInfo, printSuccess, printError } from '../ui/print.js';
 import { UI } from '../constants/meta.js';
 import { askProjectName, askConfirmOverwrite, askUseI18n } from '../cli/askProjectName.js';
 import { isDirEmpty, emptyDir, copyTemplateWithTransforms } from './files.js';
 
 export default async function scaffold({ initialName, force = false } = {}) {
+  let cleanupOnAbort = false;
+  let targetDir = null;
+  const cleanupAndExit = async () => {
+    try {
+      if (cleanupOnAbort && targetDir) {
+        await fs.remove(targetDir);
+      }
+    } catch {}
+    try {
+      process.off('SIGINT', onSigint);
+      process.off('SIGTERM', onSigterm);
+    } catch {}
+    printError('\nAborted by user. Cleanup completed.');
+    process.exit(0);
+  };
+  const onSigint = () => { cleanupAndExit(); };
+  const onSigterm = () => { cleanupAndExit(); };
+
+  // Register early so Ctrl+C at prompts exits cleanly
+  process.once('SIGINT', onSigint);
+  process.once('SIGTERM', onSigterm);
+
   const projectName = await askProjectName(initialName);
   const useI18n = await askUseI18n(true);
-  const targetDir = path.resolve(process.cwd(), projectName);
 
   const exists = await fs.pathExists(targetDir);
   if (exists) {
@@ -23,10 +44,16 @@ export default async function scaffold({ initialName, force = false } = {}) {
         }
       }
       await emptyDir(targetDir);
+      cleanupOnAbort = true; // we prepared a staging dir, safe to remove on abort
     }
   } else {
     await fs.ensureDir(targetDir);
+    cleanupOnAbort = true; // created by us, safe to remove on abort
   }
+
+  // Register signal handlers once the target dir is staged
+  process.once('SIGINT', onSigint);
+  process.once('SIGTERM', onSigterm);
 
   const createSpinner = spinner(UI.steps.createDirs).start();
   try {
@@ -81,6 +108,12 @@ export default async function scaffold({ initialName, force = false } = {}) {
   printSuccess('\nProject created successfully!');
   printInfo(`\nNext steps:\n`);
   printInfo(`  cd ${projectName}`);
-  printInfo(`  pnpm i    # or npm i / yarn`);
+  printInfo(`  pnpm i    # install dependencies`);
   printInfo(`  pnpm dev  # start Vite`);
+
+  // Cleanup signal handlers on success
+  try {
+    process.off('SIGINT', onSigint);
+    process.off('SIGTERM', onSigterm);
+  } catch {}
 }
