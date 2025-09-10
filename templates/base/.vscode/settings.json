@@ -1,0 +1,35 @@
+{
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "always",
+    "source.addMissingsImport": "always",
+    "source.fixAll.eslint": "always"
+  },
+  "prettier.singleQuote": false,
+  "editor.formatOnSave": true,
+  "prettier.vueIndentScriptAndStyle": true,
+  "prettier.printWidth": 80,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "eslint.run": "onSave",
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "vue"
+  ],
+  "[svg]": {
+    "editor.defaultFormatter": "redhat.vscode-xml"
+  },
+  "[vue]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "emeraldwalk.runonsave": {
+    "commands": [
+      {
+        "match": ".*\\.(js|ts|vue)$",
+        "cmd": "npm run lint:fix"
+      }
+    ]
+  }
+}

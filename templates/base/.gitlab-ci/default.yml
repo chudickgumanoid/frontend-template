@@ -1,0 +1,10 @@
+---
+default:
+  tags:
+    - ita-shell-builder
+
+variables:
+  SERVICES_DIR: /home/gitlab-runner
+  IMAGE_VERSION: $CI_COMMIT_SHORT_SHA
+  IMAGE_NAME: $CI_REGISTRY_IMAGE:$IMAGE_VERSION
+  SERVICE_PATH: $SERVICES_DIR/services/$ENVIRONMENT-$CI_PROJECT_NAME/

@@ -1,0 +1,33 @@
+---
+get-image-job:
+  stage: deploy
+  rules:
+  environment: $ENVIRONMENT
+  needs:
+    - prepare-docker-compose-file
+  tags:
+    - $ENVIRONMENT-$CI_PROJECT_PATH_SLUG
+  before_script:
+    - echo "$CI_REGISTRY_PASSWORD" | docker login $CI_REGISTRY -u $CI_REGISTRY_USER --password-stdin
+  script:
+    - cd $SERVICE_PATH
+    - docker compose pull
+  after_script:
+    - docker logout $CI_REGISTRY
+
+deploy-job:
+  stage: deploy
+  environment: $ENVIRONMENT
+  needs:
+    - build-job
+    - get-image-job
+  tags:
+    - $ENVIRONMENT-$CI_PROJECT_PATH_SLUG
+  rules:
+    - if: $ENVIRONMENT == "prod"
+      when: manual
+    - when: on_success
+  script:
+    - cd $SERVICE_PATH
+    - docker compose down
+    - docker compose up -d

@@ -1,0 +1,34 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "baseUrl": ".",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    },
+    "types": [
+      "naive-ui/volar",
+      "vite/client",
+      "@tanstack/vue-query",
+      "vue",
+      "vue-router"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true
+  },
+  "include": [
+    "components.d.ts",
+    "src/**/*.js",
+    "src/**/*.ts",
+    "src/**/*.vue",
+    "src/**/*.json",
+    "src/shared/UI/icons/ITelegram.scg"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}

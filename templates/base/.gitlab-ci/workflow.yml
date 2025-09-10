@@ -1,0 +1,12 @@
+---
+workflow:
+  rules:
+    - if: $CI_COMMIT_BRANCH == "dev"
+      variables:
+        ENVIRONMENT: dev
+    - if: $CI_COMMIT_BRANCH == "stage"
+      variables:
+        ENVIRONMENT: stage
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      variables:
+        ENVIRONMENT: prod

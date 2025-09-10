@@ -1,0 +1,14 @@
+include:
+  - local: .gitlab-ci/workflow.yml
+  - local: .gitlab-ci/default.yml
+  - local: .gitlab-ci/prepare.yml
+  # - local: .gitlab-ci/test.yml
+  - local: .gitlab-ci/build.yml
+  - local: .gitlab-ci/deploy.yml
+
+stages:
+  - prepare
+  # - test
+  - build
+  - prepare-deploy
+  - deploy

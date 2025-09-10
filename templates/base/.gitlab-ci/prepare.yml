@@ -1,0 +1,21 @@
+---
+prepare-job:
+  stage: prepare
+  environment: $ENVIRONMENT
+  script:
+    - env -0 | sort -z | tr '\0' '\n'
+
+prepare-docker-compose-file:
+  stage: prepare-deploy
+  environment: $ENVIRONMENT
+  tags:
+    - $ENVIRONMENT-$CI_PROJECT_PATH_SLUG
+  script:
+    - mkdir -p $SERVICE_PATH
+    - cd $SERVICE_PATH
+    - cp $CI_PROJECT_DIR/.docker-compose/* .
+    - export CI_COMMIT_MESSAGE=""
+    - export CI_COMMIT_DESCRIPTION=""
+    - export CI_PIPELINE_NAME=""
+    - env -0 | sort -z | tr '\0' '\n' > .env
+    - cat $env >> .env

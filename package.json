@@ -1,49 +1,34 @@
 {
-  "name": "@chdck/frontend-template",
-  "version": "0.1.0",
-  "private": false,
-  "description": "CLI на TypeScript для генерации структуры фронтенд-проектов с гибкими опциями.",
+  "name": "chudickgumanoid-template",
+  "version": "0.1.2",
+  "description": "Scaffold a Vue 3 + Vite frontend template via npx/pnpm dlx",
   "type": "module",
-  "main": "dist/cli.mjs",
-  "types": "dist/index.d.ts",
   "bin": {
-    "frontend-template": "dist/cli.mjs"
-  },
-  "files": [
-    "dist",
-    "README.md",
-    "!**/*.test.*"
-  ],
-  "scripts": {
-    "build": "tsup",
-    "dev": "tsup --watch",
-    "start": "node dist/cli.mjs --help",
-    "lint": "eslint .",
-    "prepare": "pnpm build",
-    "prepublishOnly": "pnpm build"
-  },
-  "keywords": [],
-  "author": "chudickgumanoid",
-  "license": "MIT",
-  "publishConfig": {
-    "access": "public"
-  },
-  "dependencies": {
-    "fs-extra": "^11.3.1",
-    "ora": "^8.2.0",
-    "pathe": "^2.0.3",
-    "picocolors": "^1.1.1",
-    "prompts": "^2.4.2",
-    "zod": "^4.1.5"
-  },
-  "devDependencies": {
-    "@types/node": "^24.3.1",
-    "eslint": "^9.35.0",
-    "tsup": "^8.5.0",
-    "typescript": "^5.9.2"
+    "chudickgumanoid-template": "./bin/index.js"
   },
   "engines": {
-    "node": ">=18.0.0",
-    "pnpm": ">=9.0.0"
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node ./bin/index.js"
+  },
+  "keywords": [
+    "cli",
+    "scaffold",
+    "vue",
+    "vite",
+    "template",
+    "frontend"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "boxen": "^7.1.1",
+    "chalk": "^5.3.0",
+    "commander": "^12.1.0",
+    "figlet": "^1.7.0",
+    "fs-extra": "^11.2.0",
+    "inquirer": "^9.3.7",
+    "ora": "^8.1.1"
   }
 }

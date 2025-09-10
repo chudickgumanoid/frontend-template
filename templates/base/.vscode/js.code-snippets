@@ -1,0 +1,68 @@
+{
+  "onMounted with load": {
+    "prefix": "js-onMount",
+    "body": ["onMounted(async () => {", "  await ${1:fetchFunc}();", "});"],
+    "description": "Modal window with title",
+  },
+  "set formStateComp": {
+    "prefix": "js-set-formStateComp",
+    "body": [
+      "const formStateComp = computed(() => {",
+      "  const state = props.mode ? props.formState : formState.value;\n",
+      "  return state;",
+      "});",
+    ],
+    "description": "Set default import and rules for useVuelidate",
+  },
+  "set piniaStore": {
+    "prefix": "js-store",
+    "body": [
+      "import { defineStore } from \"pinia\";",
+      "\n",
+      "export const use${TM_FILENAME_BASE/(.*)/${1:/capitalize}/} = defineStore(\"${TM_FILENAME_BASE}\", () => {",
+      "  $1",
+      "  return {",
+      "  }",
+      "});",
+    ],
+    "description": "Set default import and rules for useVuelidate",
+  },
+  "vue watch callback": {
+    "prefix": "js-vue-watch-callback",
+    "body": [
+      "watch(",
+      "  () => ${1:key},",
+      "  (newValue, oldValue) => {\n",
+      "  },",
+      ");",
+    ],
+    "description": "vue watch callback",
+  },
+  "vue watch": {
+    "prefix": "js-vue-watch",
+    "body": [
+      "watch(",
+      "  ${1:key},",
+      "  (newValue, oldValue) => {\n",
+      "  },",
+      ");",
+    ],
+    "description": "vue watch",
+  },
+  "vue route": {
+    "prefix": "js-route",
+    "body": [
+      "import { useRoute, useRouter } from \"vue-router\";\n",
+      "const router = useRouter();",
+      "const route = useRoute();",
+    ],
+    "description": "axios general",
+  },
+  "dayjs": {
+    "prefix": "js-day",
+    "body": [
+      "import dayjs from \"@/shared/utils/dayjs-ru\";",
+    ],
+    "description": "import dayjs",
+  },
+}

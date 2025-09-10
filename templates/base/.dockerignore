@@ -1,0 +1,6 @@
+.env.example
+.gitignore
+.gitlab-ci.yml
+.vscode
+node_modules
+dist
