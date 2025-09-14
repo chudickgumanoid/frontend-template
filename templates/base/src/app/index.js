@@ -4,7 +4,7 @@ import { createHead } from "@vueuse/head";
 import dayjs from "dayjs";
 import { vMaska } from "maska";
 import { createPinia } from "pinia";
-import "virtual:svg-icons-register";
+// import "virtual:svg-icons-register";
 import { createApp } from "vue";
 import App from "./App.vue";
 import { registerComponents } from "./providers/components/registerComponents";
@@ -27,4 +27,3 @@ export const application = app
   .use(router)
   .directive("maska", vMaska)
   .use(head);
-
