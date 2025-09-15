@@ -1,6 +1,6 @@
 {
   "name": "@chdck/vue-template",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Scaffold a Vue 3 + Vite frontend template via npx/pnpm dlx",
   "type": "module",
   "bin": {
@@ -31,12 +31,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/chdck/frontend-template.git"
+    "url": "git+https://github.com/chudickgumanoid/frontend-template"
   },
   "bugs": {
-    "url": "https://github.com/chdck/frontend-template/issues"
+    "url": "https://github.com/chudickgumanoid/frontend-template/issues"
   },
-  "homepage": "https://github.com/chdck/frontend-template#readme",
+  "homepage": "https://github.com/chudickgumanoid/frontend-template#readme",
   "publishConfig": {
     "access": "public"
   },

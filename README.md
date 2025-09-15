@@ -16,14 +16,9 @@ npx @chdck/vue-template@latest my-app
 
 ```
 pnpm dlx @chdck/vue-template my-app
+```
 
 Or via the unscoped binary names:
-
-```
-npx create-vue-template my-app
-pnpm dlx vue-template my-app
-```
-```
 
 Then:
 
@@ -78,22 +73,6 @@ If you disable an option, the CLI removes related files/imports, updates `vite.c
 - Layered structure: `app/`, `pages/`, `features/`, `widgets/`, `shared/`.
 - Alias ready: `@ -> src` (see `vite.config.js`, `jsconfig.json`).
 
-## ENV and scripts (in the generated project)
-
-- Example variables: `.env.example` (copy to `.env`).
-  - `VITE_BASE_API_URL` — base API URL.
-  - `VITE_DEV_PORT` — dev server port.
-  - `VITE_IS_DEV` — development mode flag.
-
-Scripts:
-
-- `pnpm dev` — run the dev server.
-- `pnpm build` — production build.
-- `pnpm preview` — preview the build.
-- `pnpm lint` / `pnpm lint:fix` — linting (if ESLint is included).
-- `pnpm format` — format with Prettier.
-- `pnpm test:unit` — unit tests (vitest).
-
 ## Examples
 
 - Create a project and overwrite the target folder if it isn’t empty:
@@ -113,10 +92,3 @@ npx @chdck/vue-template
 - Node.js >= 18
 - pnpm is recommended (npm/yarn also work)
 
-## CLI development (for contributors)
-
-- Run locally from the repository:
-
-```
-pnpm start
-```
