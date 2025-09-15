@@ -24,6 +24,7 @@ import { vMaska } from "maska";
 import { createPinia } from "pinia";
 import { createApp } from "vue";
 import App from "./App.vue";
+import "virtual:svg-icons-register";
 import { registerComponents } from "./providers/components/registerComponents";
 import i18n from "./providers/i18n";
 import router from "./providers/router";

@@ -1,7 +1,7 @@
 <template>
   <div class="py-6 space-y-6">
     <section>
-      <h2 class="text-3xl font-bold">{{ t('home.title') }}</h2>
+      <h2 class="text-3xl font-bold">{{ t("home.title") }}</h2>
       <p class="text-gray-600 mt-1">
         Demo page: Naive UI providers, loader and notifications.
       </p>
@@ -80,6 +80,11 @@
         to customize.
       </div>
     </n-card>
+
+    <m-icon
+      name="activity"
+      size="48"
+    />
   </div>
 </template>
 
