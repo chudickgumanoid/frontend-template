@@ -1,10 +1,11 @@
 {
-  "name": "chudickgumanoid-template",
-  "version": "0.0.01",
+  "name": "@chdck/vue-template",
+  "version": "0.0.1",
   "description": "Scaffold a Vue 3 + Vite frontend template via npx/pnpm dlx",
   "type": "module",
   "bin": {
-    "chudickgumanoid-template": "./bin/index.js"
+    "vue-template": "./bin/index.js",
+    "create-vue-template": "./bin/index.js"
   },
   "engines": {
     "node": ">=18"
@@ -12,6 +13,12 @@
   "scripts": {
     "start": "node ./bin/index.js"
   },
+  "files": [
+    "bin",
+    "src",
+    "templates",
+    "README.md"
+  ],
   "keywords": [
     "cli",
     "scaffold",
@@ -20,8 +27,19 @@
     "template",
     "frontend"
   ],
-  "author": "",
+  "author": "@chdck",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chdck/frontend-template.git"
+  },
+  "bugs": {
+    "url": "https://github.com/chdck/frontend-template/issues"
+  },
+  "homepage": "https://github.com/chdck/frontend-template#readme",
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "boxen": "^7.1.1",
     "chalk": "^5.3.0",

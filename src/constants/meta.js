@@ -1,7 +1,7 @@
 export const APP_NAME_PLACEHOLDER = '__APP_NAME__';
 
 export const UI = {
-  bannerTitle: 'chdck',
+  bannerTitle: 'chdck-vue-template',
   bannerSubtitle: 'Vite + Vue 3 frontend template',
   steps: {
     createDirs: '🔧 Creating directories',
@@ -54,6 +54,6 @@ export const PROMPTS = {
 };
 
 export const README = {
-  usagePnpm: 'pnpm dlx create-chdck-template',
-  usageNpx: 'npx create-chdck-template@latest'
+  usagePnpm: 'pnpm dlx @chdck/vue-template my-app',
+  usageNpx: 'npx @chdck/vue-template@latest my-app'
 };

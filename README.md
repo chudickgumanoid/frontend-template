@@ -1,4 +1,4 @@
-# frontend-template
+# @chdck/vue-template
 
 A CLI to quickly scaffold a Vite + Vue 3 frontend template. It generates a project structure with ready‑to‑use providers (Router, Pinia, i18n, Vue Query), Vite configuration, Tailwind v4, a Naive UI layer, and a set of helpful utilities. During setup you can opt out of subsystems (i18n, TanStack Query, SVG sprite, ESLint).
 
@@ -6,16 +6,23 @@ A CLI to quickly scaffold a Vite + Vue 3 frontend template. It generates a proje
 
 ## Quick Start
 
-– via npx:
+– via npx (scoped package):
 
 ```
-npx frontend-template my-app
+npx @chdck/vue-template@latest my-app
 ```
 
-– via pnpm dlx:
+– via pnpm dlx (scoped package):
 
 ```
-pnpm dlx frontend-template my-app
+pnpm dlx @chdck/vue-template my-app
+
+Or via the unscoped binary names:
+
+```
+npx create-vue-template my-app
+pnpm dlx vue-template my-app
+```
 ```
 
 Then:
@@ -38,7 +45,7 @@ If you don’t pass a project name, the CLI will ask for it interactively (kebab
 ## Usage
 
 ```
-frontend-template [project-name] [options]
+vue-template [project-name] [options]
 ```
 
 - `[project-name]`: project folder name in kebab-case (e.g., `awesome-app`).
@@ -47,7 +54,7 @@ frontend-template [project-name] [options]
 Help:
 
 ```
-npx frontend-template --help
+npx @chdck/vue-template --help
 ```
 
 ## Interactive options
@@ -92,13 +99,13 @@ Scripts:
 - Create a project and overwrite the target folder if it isn’t empty:
 
 ```
-npx frontend-template awesome-app --force
+npx @chdck/vue-template awesome-app --force
 ```
 
 - Run interactively without a name and choose options:
 
 ```
-npx frontend-template
+npx @chdck/vue-template
 ```
 
 ## Requirements
@@ -113,4 +120,3 @@ npx frontend-template
 ```
 pnpm start
 ```
-

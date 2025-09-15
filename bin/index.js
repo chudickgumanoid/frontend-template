@@ -6,9 +6,9 @@ import scaffold from '../src/core/scaffold.js';
 const program = new Command();
 
 program
-  .name('chudickgumanoid-template')
+  .name('vue-template')
   .description('Create a Vue 3 + Vite frontend template project')
-  .version('0.1.0');
+  .version('0.0.1');
 
 program
   .argument('[project-name]', 'Project name in kebab-case')
@@ -24,4 +24,3 @@ program
   });
 
 program.parseAsync(process.argv);
-
