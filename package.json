@@ -11,7 +11,10 @@
     "node": ">=18"
   },
   "scripts": {
-    "start": "node ./bin/index.js"
+    "start": "node ./bin/index.js",
+    "build": "echo \"no build\"",
+    "prepublishOnly": "pnpm build",
+    "release": "bumpp --commit --tag --push"
   },
   "files": [
     "bin",
@@ -48,5 +51,8 @@
     "fs-extra": "^11.2.0",
     "inquirer": "^9.3.7",
     "ora": "^8.1.1"
+  },
+  "devDependencies": {
+    "bumpp": "^10.2.0"
   }
 }
