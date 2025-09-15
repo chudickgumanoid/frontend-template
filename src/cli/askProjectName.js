@@ -45,3 +45,16 @@ export async function askUseI18n(defaultValue = true) {
   ]);
   return useI18n;
 }
+
+export async function askUseSvgSprite(defaultValue = true) {
+  const { useSvgSprite } = await inquirer.prompt([
+    {
+      type: 'list',
+      name: 'useSvgSprite',
+      message: PROMPTS.useSvgSprite.message,
+      choices: PROMPTS.useSvgSprite.choices,
+      default: defaultValue ? 0 : 1
+    }
+  ]);
+  return useSvgSprite;
+}

@@ -29,6 +29,13 @@ export const PROMPTS = {
       { name: 'Yes', value: true },
       { name: 'No', value: false }
     ]
+  },
+  useSvgSprite: {
+    message: 'Use SVG sprite (vite-plugin-svg-icons)?',
+    choices: [
+      { name: 'Yes', value: true },
+      { name: 'No', value: false }
+    ]
   }
 };
 

@@ -4,7 +4,7 @@ import fs from 'fs-extra';
 import { getTemplatePath } from '../constants/paths.js';
 import { spinner, printFinalInstructions, printError } from '../ui/print.js';
 import { UI } from '../constants/meta.js';
-import { askProjectName, askConfirmOverwrite, askUseI18n } from '../cli/askProjectName.js';
+import { askProjectName, askConfirmOverwrite, askUseI18n, askUseSvgSprite } from '../cli/askProjectName.js';
 import { isDirEmpty, emptyDir, copyTemplateWithTransforms } from './files.js';
 
 export default async function scaffold({ initialName, force = false } = {}) {
@@ -32,6 +32,7 @@ export default async function scaffold({ initialName, force = false } = {}) {
 
   const projectName = await askProjectName(initialName);
   const useI18n = await askUseI18n(true);
+  const useSvgSprite = await askUseSvgSprite(true);
   targetDir = path.resolve(process.cwd(), projectName);
 
   const exists = await fs.pathExists(targetDir);
@@ -160,6 +161,88 @@ export default async function scaffold({ initialName, force = false } = {}) {
           .replace(/^\s*import\s*\{\s*useI18n\s*\}\s*from\s*['\"]vue-i18n['\"];?\s*\r?\n/m, '')
           .replace(/^\s*const\s*\{\s*t\s*\}\s*=\s*useI18n\(\)\s*;?\s*\r?\n/m, '');
         await fs.writeFile(mConfirmPath, mConfirm, 'utf8');
+      }
+    }
+    // Handle optional SVG sprite usage
+    if (!useSvgSprite) {
+      // 1) Remove icon component folder
+      await fs.remove(path.join(targetDir, 'src/shared/UI/main/icon'));
+
+      // 2) Clean public/img/icons (leave .gitkeep if present)
+      const iconsDir = path.join(targetDir, 'public/img/icons');
+      if (await fs.pathExists(iconsDir)) {
+        const files = await fs.readdir(iconsDir);
+        await Promise.all(
+          files
+            .filter((f) => f !== '.gitkeep')
+            .map((f) => fs.remove(path.join(iconsDir, f)))
+        );
+      }
+
+      // 3) Update registerComponents.js to stop auto-registering icon components
+      const regCompPath = path.join(targetDir, 'src/app/providers/components/registerComponents.js');
+      if (await fs.pathExists(regCompPath)) {
+        let regComp = await fs.readFile(regCompPath, 'utf8');
+        regComp = regComp.replace(/^[\t ]*import\.meta\.glob\(["']@\/shared\/UI\/main\/icon\/\*\.vue["'],\s*\{\s*eager:\s*true\s*\}\s*\),?\s*\r?\n/m, '');
+        await fs.writeFile(regCompPath, regComp, 'utf8');
+      }
+
+      // 4) Update HomePage.vue: replace <m-icon .../> with <ActivityIcon/>
+      const homePagePath = path.join(targetDir, 'src/pages/home/ui/HomePage.vue');
+      if (await fs.pathExists(homePagePath)) {
+        let homePage = await fs.readFile(homePagePath, 'utf8');
+        // Replace any <m-icon .../> self-closing block with ActivityIcon
+        homePage = homePage.replace(/<m-icon[\s\S]*?\/>/m, '<ActivityIcon />');
+        // Ensure import exists at top of <script setup>
+        if (!/from\s+["']lucide-vue-next["']/.test(homePage)) {
+          homePage = homePage.replace(
+            /<script\s+setup>/,
+            '<script setup>\nimport { ActivityIcon } from "lucide-vue-next";'
+          );
+        }
+        await fs.writeFile(homePagePath, homePage, 'utf8');
+      }
+
+      // 5) Update vite.config.js: remove import and plugin usage of vite-plugin-svg-icons
+      const viteConfigPath = path.join(targetDir, 'vite.config.js');
+      if (await fs.pathExists(viteConfigPath)) {
+        let viteCfg = await fs.readFile(viteConfigPath, 'utf8');
+        // Remove import for createSvgIconsPlugin
+        viteCfg = viteCfg.replace(/^[\t ]*import\s*\{\s*createSvgIconsPlugin\s*\}\s*from\s*["']vite-plugin-svg-icons["'];?\s*\r?\n/m, '');
+        // Remove import path (only used for plugin)
+        viteCfg = viteCfg.replace(/^[\t ]*import\s+path\s+from\s+["']node:path["'];?\s*\r?\n/m, '');
+        // Remove createSvgIconsPlugin({ ... }) entry in plugins array, whole block line(s)
+        viteCfg = viteCfg.replace(/^[\t ]*createSvgIconsPlugin\(\{[\s\S]*?\}\)\s*,?\s*\r?\n/m, '');
+        // Conservative fallbacks if object lines somehow remain
+        viteCfg = viteCfg
+          .replace(/^[\t ]*iconDirs:\s*\[[^\]]*\]\s*,?\s*\r?\n/m, '')
+          .replace(/^[\t ]*symbolId:\s*[^,]+,?\s*\r?\n/m, '')
+          .replace(/^[\t ]*svgoOptions:\s*[^,]+,?\s*\r?\n/m, '');
+        await fs.writeFile(viteConfigPath, viteCfg, 'utf8');
+      }
+
+      // 6) Remove devDependency vite-plugin-svg-icons
+      const pkgPath = path.join(targetDir, 'package.json');
+      if (await fs.pathExists(pkgPath)) {
+        const pkgRaw = await fs.readFile(pkgPath, 'utf8');
+        const pkg = JSON.parse(pkgRaw);
+        if (pkg.devDependencies && pkg.devDependencies['vite-plugin-svg-icons']) {
+          delete pkg.devDependencies['vite-plugin-svg-icons'];
+        }
+        await fs.writeFile(pkgPath, JSON.stringify(pkg, null, 2) + '\n', 'utf8');
+      }
+
+      // 7) Ensure lucide-vue-next is present in package.json (install happens later by user)
+      if (await fs.pathExists(pkgPath)) {
+        try {
+          const pkgRaw2 = await fs.readFile(pkgPath, 'utf8');
+          const pkg2 = JSON.parse(pkgRaw2);
+          pkg2.dependencies = pkg2.dependencies || {};
+          if (!pkg2.dependencies['lucide-vue-next']) {
+            pkg2.dependencies['lucide-vue-next'] = '^0.544.0';
+            await fs.writeFile(pkgPath, JSON.stringify(pkg2, null, 2) + '\n', 'utf8');
+          }
+        } catch {}
       }
     }
     optsSpinner.succeed(UI.steps.applyOptions);
