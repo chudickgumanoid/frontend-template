@@ -4,7 +4,7 @@ import fs from 'fs-extra';
 import { getTemplatePath } from '../constants/paths.js';
 import { spinner, printFinalInstructions, printError } from '../ui/print.js';
 import { UI } from '../constants/meta.js';
-import { askProjectName, askConfirmOverwrite, askUseI18n, askUseSvgSprite, askUseEslint } from '../cli/askProjectName.js';
+import { askProjectName, askConfirmOverwrite, askUseI18n, askUseTanstackQuery, askUseSvgSprite, askUseEslint } from '../cli/askProjectName.js';
 import { isDirEmpty, emptyDir, copyTemplateWithTransforms } from './files.js';
 
 export default async function scaffold({ initialName, force = false } = {}) {
@@ -32,6 +32,7 @@ export default async function scaffold({ initialName, force = false } = {}) {
 
   const projectName = await askProjectName(initialName);
   const useI18n = await askUseI18n(true);
+  const useTanstackQuery = await askUseTanstackQuery(true);
   const useSvgSprite = await askUseSvgSprite(true);
   const useEslint = await askUseEslint(true);
   targetDir = path.resolve(process.cwd(), projectName);
@@ -162,6 +163,94 @@ export default async function scaffold({ initialName, force = false } = {}) {
           .replace(/^\s*import\s*\{\s*useI18n\s*\}\s*from\s*['\"]vue-i18n['\"];?\s*\r?\n/m, '')
           .replace(/^\s*const\s*\{\s*t\s*\}\s*=\s*useI18n\(\)\s*;?\s*\r?\n/m, '');
         await fs.writeFile(mConfirmPath, mConfirm, 'utf8');
+      }
+    }
+    // Handle optional TanStack Query usage
+    if (!useTanstackQuery) {
+      // 1) Remove Vue Query client and feature hooks files
+      await fs.remove(path.join(targetDir, 'src/shared/api/queryClient.js'));
+      await fs.remove(path.join(targetDir, 'src/features/auth/api/hooks.js'));
+
+      // 2) Update feature api index.js to stop re-exporting hooks
+      const featureApiIndexPath = path.join(targetDir, 'src/features/auth/api/index.js');
+      if (await fs.pathExists(featureApiIndexPath)) {
+        let apiIndex = await fs.readFile(featureApiIndexPath, 'utf8');
+        apiIndex = apiIndex.replace(/^[\t ]*export\s*\*\s*from\s*["']\.\/hooks["'];?\s*\r?\n/m, '');
+        await fs.writeFile(featureApiIndexPath, apiIndex, 'utf8');
+      }
+
+      // 3) Remove Devtools usage/import from App.vue
+      const appVuePath = path.join(targetDir, 'src/app/App.vue');
+      if (await fs.pathExists(appVuePath)) {
+        let appVue = await fs.readFile(appVuePath, 'utf8');
+        appVue = appVue
+          .replace(/^[\t ]*<VueQueryDevtools\s*\/?>\s*\r?\n/m, '')
+          .replace(/^[\t ]*import\s*\{\s*VueQueryDevtools\s*\}\s*from\s*["']@tanstack\/vue-query-devtools["'];?\s*\r?\n/m, '');
+        await fs.writeFile(appVuePath, appVue, 'utf8');
+      }
+
+      // 4) Remove VueQueryPlugin usage/import and queryClient import from app entry
+      const appIndexPath2 = path.join(targetDir, 'src/app/index.js');
+      if (await fs.pathExists(appIndexPath2)) {
+        let appIndex2 = await fs.readFile(appIndexPath2, 'utf8');
+        appIndex2 = appIndex2
+          .replace(/^[\t ]*import\s*\{\s*queryClient\s*\}\s*from\s*["']@\/shared\/api\/queryClient["'];?\s*\r?\n/m, '')
+          .replace(/^[\t ]*import\s*\{\s*VueQueryPlugin\s*\}\s*from\s*["']@tanstack\/vue-query["'];?\s*\r?\n/m, '')
+          .replace(/\n?^[\t ]*\.use\(\s*VueQueryPlugin\s*,\s*\{\s*queryClient\s*\}\s*\)\s*\r?\n/m, '\n');
+        await fs.writeFile(appIndexPath2, appIndex2, 'utf8');
+      }
+
+      // 5) Remove dependencies from package.json
+      const pkgPathQ = path.join(targetDir, 'package.json');
+      if (await fs.pathExists(pkgPathQ)) {
+        try {
+          const pkgRaw = await fs.readFile(pkgPathQ, 'utf8');
+          const pkg = JSON.parse(pkgRaw);
+          if (pkg.dependencies) {
+            delete pkg.dependencies['@tanstack/vue-query'];
+            delete pkg.dependencies['@tanstack/vue-query-devtools'];
+          }
+          await fs.writeFile(pkgPathQ, JSON.stringify(pkg, null, 2) + '\n', 'utf8');
+        } catch {}
+      }
+
+      // 6) Clean Vite manualChunks mapping for TanStack Query
+      const viteConfigPathQ = path.join(targetDir, 'vite.config.js');
+      if (await fs.pathExists(viteConfigPathQ)) {
+        let viteCfgQ = await fs.readFile(viteConfigPathQ, 'utf8');
+        viteCfgQ = viteCfgQ.replace(/^[\t ]*query:\s*\[\s*["']@tanstack\/vue-query["']\s*\]\s*,?\s*\r?\n/m, '');
+        await fs.writeFile(viteConfigPathQ, viteCfgQ, 'utf8');
+      }
+
+      // 7) Remove @tanstack/vue-query from jsconfig types
+      const jsconfigPath = path.join(targetDir, 'jsconfig.json');
+      if (await fs.pathExists(jsconfigPath)) {
+        let jsconfig = await fs.readFile(jsconfigPath, 'utf8');
+        jsconfig = jsconfig.replace(/^[\t ]*"@tanstack\/vue-query",?\s*\r?\n/m, '');
+        await fs.writeFile(jsconfigPath, jsconfig, 'utf8');
+      }
+
+      // 8) Update feature API README to strip hook-related docs
+      const apiReadmePath = path.join(targetDir, 'src/features/auth/api/README.md');
+      if (await fs.pathExists(apiReadmePath)) {
+        let doc = await fs.readFile(apiReadmePath, 'utf8');
+        // Normalize title
+        doc = doc.replace(/^#\s*Auth API:.*$/m, '# Auth API');
+        // Remove lines that reference TanStack Query directly
+        doc = doc.replace(/^.*TanStack Query.*\r?\n?/gmi, '');
+        // Remove Hooks section
+        doc = doc.replace(/^###\s+Hooks[\s\S]*?(?=^##\s|\Z)/m, '');
+        // Remove hooks bullet in overview
+        doc = doc.replace(/^[\t ]*-\s*`hooks\.js`[\s\S]*?(?=^\s*-\s*`|^\s*\n|^##\s|\Z)/m, '');
+        // Remove step 2 (wrap with hook)
+        doc = doc.replace(/\n2\)[\s\S]*?(?=\n3\))/m, '\n');
+        // Remove step 4 (use in a component) and everything after
+        doc = doc.replace(/\n4\)[\s\S]*$/m, '\n');
+        // Remove any 'Hook names' convention line
+        doc = doc.replace(/^[\t ]*-\s*Hook names:[^\n]*\n/m, '');
+        // Remove re-export of hooks in snippets if present
+        doc = doc.replace(/^[\t ]*export\s*\*\s*from\s*["']\.\/hooks["'];?\s*\r?\n/m, '');
+        await fs.writeFile(apiReadmePath, doc, 'utf8');
       }
     }
     // Handle optional SVG sprite usage

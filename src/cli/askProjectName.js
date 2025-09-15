@@ -46,6 +46,19 @@ export async function askUseI18n(defaultValue = true) {
   return useI18n;
 }
 
+export async function askUseTanstackQuery(defaultValue = true) {
+  const { useTanstackQuery } = await inquirer.prompt([
+    {
+      type: 'list',
+      name: 'useTanstackQuery',
+      message: PROMPTS.useTanstackQuery.message,
+      choices: PROMPTS.useTanstackQuery.choices,
+      default: defaultValue ? 0 : 1
+    }
+  ]);
+  return useTanstackQuery;
+}
+
 export async function askUseSvgSprite(defaultValue = true) {
   const { useSvgSprite } = await inquirer.prompt([
     {

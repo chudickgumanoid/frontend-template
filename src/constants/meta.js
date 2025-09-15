@@ -30,6 +30,13 @@ export const PROMPTS = {
       { name: 'No', value: false }
     ]
   },
+  useTanstackQuery: {
+    message: 'Use TanStack Query?',
+    choices: [
+      { name: 'Yes', value: true },
+      { name: 'No', value: false }
+    ]
+  },
   useSvgSprite: {
     message: 'Use SVG sprite (vite-plugin-svg-icons)?',
     choices: [
