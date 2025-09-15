@@ -1,6 +1,6 @@
 {
   "name": "@chdck/vue-template",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Scaffold a Vue 3 + Vite frontend template via npx/pnpm dlx",
   "type": "module",
   "bin": {
