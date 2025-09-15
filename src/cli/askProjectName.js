@@ -58,3 +58,16 @@ export async function askUseSvgSprite(defaultValue = true) {
   ]);
   return useSvgSprite;
 }
+
+export async function askUseEslint(defaultValue = true) {
+  const { useEslint } = await inquirer.prompt([
+    {
+      type: 'list',
+      name: 'useEslint',
+      message: PROMPTS.useEslint.message,
+      choices: PROMPTS.useEslint.choices,
+      default: defaultValue ? 0 : 1
+    }
+  ]);
+  return useEslint;
+}

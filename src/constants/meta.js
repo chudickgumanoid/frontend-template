@@ -36,6 +36,13 @@ export const PROMPTS = {
       { name: 'Yes', value: true },
       { name: 'No', value: false }
     ]
+  },
+  useEslint: {
+    message: 'Use ESLint?',
+    choices: [
+      { name: 'Yes', value: true },
+      { name: 'No', value: false }
+    ]
   }
 };
 

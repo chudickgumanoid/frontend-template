@@ -4,7 +4,7 @@ import fs from 'fs-extra';
 import { getTemplatePath } from '../constants/paths.js';
 import { spinner, printFinalInstructions, printError } from '../ui/print.js';
 import { UI } from '../constants/meta.js';
-import { askProjectName, askConfirmOverwrite, askUseI18n, askUseSvgSprite } from '../cli/askProjectName.js';
+import { askProjectName, askConfirmOverwrite, askUseI18n, askUseSvgSprite, askUseEslint } from '../cli/askProjectName.js';
 import { isDirEmpty, emptyDir, copyTemplateWithTransforms } from './files.js';
 
 export default async function scaffold({ initialName, force = false } = {}) {
@@ -33,6 +33,7 @@ export default async function scaffold({ initialName, force = false } = {}) {
   const projectName = await askProjectName(initialName);
   const useI18n = await askUseI18n(true);
   const useSvgSprite = await askUseSvgSprite(true);
+  const useEslint = await askUseEslint(true);
   targetDir = path.resolve(process.cwd(), projectName);
 
   const exists = await fs.pathExists(targetDir);
@@ -242,6 +243,26 @@ export default async function scaffold({ initialName, force = false } = {}) {
             pkg2.dependencies['lucide-vue-next'] = '^0.544.0';
             await fs.writeFile(pkgPath, JSON.stringify(pkg2, null, 2) + '\n', 'utf8');
           }
+        } catch {}
+      }
+    }
+    // Handle optional ESLint usage
+    if (!useEslint) {
+      // 1) Remove ESLint config file
+      await fs.remove(path.join(targetDir, 'eslint.config.js'));
+
+      // 2) Remove ESLint-related devDependencies from package.json
+      const pkgPath = path.join(targetDir, 'package.json');
+      if (await fs.pathExists(pkgPath)) {
+        try {
+          const pkgRaw = await fs.readFile(pkgPath, 'utf8');
+          const pkg = JSON.parse(pkgRaw);
+          if (pkg.devDependencies) {
+            delete pkg.devDependencies['@antfu/eslint-config'];
+            delete pkg.devDependencies['eslint'];
+            delete pkg.devDependencies['eslint-plugin-prettier'];
+          }
+          await fs.writeFile(pkgPath, JSON.stringify(pkg, null, 2) + '\n', 'utf8');
         } catch {}
       }
     }
