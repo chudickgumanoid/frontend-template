@@ -9,14 +9,10 @@ import { onMounted } from "vue";
 const loadingBar = useLoadingBar();
 
 onMounted(() => {
-  // Define callback function to get notified on changes
   function somethingChanged(changes) {
-    // do something
     if (changes.__type) {
       loadingBar[changes.__type](changes);
     }
-    // notification.warning(changes);
-    // console.log(notification);
   }
 
   if (!window.loadingBar) {

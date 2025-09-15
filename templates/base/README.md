@@ -1,25 +1,24 @@
-# __APP_NAME__
+# **APP_NAME**
 
-Кабинет налогоплательщика.
+### Paste your description
 
-- Создание QR кода с последующей выгрузкой в PDF
-- Просмотр паспорта налогоплательщика
+## Table of contents
 
-## Оглавление
-
-- [__APP\_NAME__](#app_name)
-  - [Оглавление](#оглавление)
-  - [Установка](#установка)
-  - [Сборка для продакшена](#сборка-для-продакшена)
-    - [Переменные окружения](#переменные-окружения)
-  - [Конвенция коммитов](#конвенция-коммитов)
-    - [Рекомендации по описанию](#рекомендации-по-описанию)
-    - [Если есть необходимость в пояснении](#если-есть-необходимость-в-пояснении)
+- [**APP\_NAME**](#app_name)
+    - [Paste your description](#paste-your-description)
+  - [Table of contents](#table-of-contents)
+  - [Used stack technologies:](#used-stack-technologies)
+  - [Install](#install)
+  - [Build for production](#build-for-production)
+    - [Env variables](#env-variables)
+  - [Commit convention](#commit-convention)
+    - [Description recommendations](#description-recommendations)
+    - [If there is a need for clarification](#if-there-is-a-need-for-clarification)
   - [ESLint и Prettier](#eslint-и-prettier)
-    - [Установка и настройка](#установка-и-настройка)
-    - [Рекомендации для команды](#рекомендации-для-команды)
+    - [Installation and configuration](#installation-and-configuration)
+    - [Recommendations for the team](#recommendations-for-the-team)
 
-Используемый стек технологий:
+## Used stack technologies:
 
 - Vue 3, Vite
 - Tailwind v4, CSS
@@ -28,27 +27,21 @@
 - Axios, TanstackQuery
 - Docker, Nginx
 
-## Установка
+## Install
 
-1. Склонируйте репозиторий
-
-```bash
-  git clone https://git.itanalytics.kz/tax-qr/taxpayer-frontend.git
-```
-
-2. Установите зависимости (в приоритете использовать pnpm)
+1. Install dependencies (priority to used `pnpm`):
 
 ```bash
 pnpm i
 ```
 
-3. Запустите проект для локальной разработки:
+2. Start dev server:
 
 ```bash
 npm dev
 ```
 
-## Сборка для продакшена
+## Build for production
 
 ```bash
 pnpm build && pnpm preview
@@ -56,54 +49,53 @@ pnpm build && pnpm preview
 
 ---
 
-### Переменные окружения
+### Env variables
 
-Все переменые среды берутся из файла .env
+All variables are taken from the .env file
 
-| Название переменной | Описание переменной                                        | ПРИМЕР                          | ОБЯЗАТЕЛЬНОЕ? |
-| ------------------- | ---------------------------------------------------------- | ------------------------------- | ------------- |
-| VITE_BASE_API_URL   | Основная ссылка на API для взаимодействия с сервером       | http://192.168.0.2:10001/api/v1 | да            |
-| VITE_DEV_PORT       | Переменная отвечает за запуск на нужном порту в dev режиме | 10410                           | нет           |
-| VITE_IS_DEV         | Для быстрого заполнения полей на бекенде                   |                                 | нет           |
-| VITE_MAP_API_KEY    | Для корректной работы и яндекс карт нужен api-key          |                                 | да            |
+| Name              | Description                                  | Example                         | Required? |
+| ----------------- | -------------------------------------------- | ------------------------------- | --------- |
+| VITE_BASE_API_URL | Mai API url for requests                     | http://192.168.0.2:10001/api/v1 | yes       |
+| VITE_DEV_PORT     | Variable for start dev server on custom port | 10410                           | no        |
+| VITE_IS_DEV       | For dev mode?                                |                                 | no        |
 
 ---
 
-## Конвенция коммитов
+## Commit convention
 
-Каждое сообщение коммита начинается с тега типа изменений, который позволяет понять, какую именно задачу или изменение выполнен коммит. Формат сообщения коммита следующий:
+Each commit message begins with a change type tag, which allows you to understand which task or change the commit has completed. The format of the commit message is as follows:
 
 ```
-<тип>: <краткое описание изменений на английском>
+<type>: <brief description of the changes in English>
 ```
 
-- **feat:** - Добавление новой функциональности в кодовую базу.
-  - _пример:_ feat: add store for auth
-- **fix:** - Исправление ошибок в коде.
-  - _пример:_ fix: clear state in pp deal
-- **docs:** - Добавление|Изменение документации.
-  - _пример:_ docs: update doc for bb deal model
-- **style:** - Изменения, связанные с оформлением кода (отступы, пробелы, точки с запятой и т.д.), которые не влияют на выполнение кода.
-  - _пример:_ style: change margin for all h1 tags
-- **refactor:** - Изменения в коде, не влияющие на его функциональность, но улучшающие его структуру, читабельность или производительность.
-  - _пример:_ refactor: refactor LoginView.vue
-- **test:** - Добавление или изменение тестов.
-  - _пример:_ test: create test for auth
-- **ci:** - Добавление|Изменение Continue Integration.
-  - _пример:_ ci: update name for pipeline
+- **feat:** - Adding new functionality to the codebase.
+  - _example:_ feat: add store for auth
+- **fix:** - Correction of errors in the code.
+  - _example:_ fix: clear state in pp deal
+- **docs:** - Adding|Changing the documentation.
+  - _example:_ docs: update doc for bb deal model
+- **style:** - Changes related to the design of the code (indents, spaces, semicolons, etc.) that do not affect the execution of the code.
+  - _example:_ style: change margin for all h1 tags
+- **refactor:** - Changes to the code that do not affect its functionality, but improve its structure, readability, or performance.
+  - _example:_ refactor: refactor LoginView.vue
+- **test:** - Add or modify tests.
+  - _example:_ test: create test for auth
+- **ci:** - Add|Change the Continue Integration.
+  - _example:_ ci: update name for pipeline
 
-### Рекомендации по описанию
+### Description recommendations
 
-1. **Краткость:** Описание изменений должно быть коротким и точным.
-2. **Ясность:** Используйте понятные термины и избегайте аббревиатур.
+1. **Brevity:** The description of the changes should be short and accurate.
+2. **Clarity:** Use clear terms and avoid abbreviations.
 
-### Если есть необходимость в пояснении
+### If there is a need for clarification
 
-Если есть необходимость в пояснении, то можно написать комментарии к коммиту в формате .md.
-Пишем основной коммит с типом
-Ниже в "```" пишем комментарии к пояснению
+If there is a need for an explanation, then you can write comments to the commit in the .md format.
+We write the main commit with the type
+Below in the "``" we write comments to the explanation
 
-пример:
+example:
 
 ```
 feat: add deal pp
@@ -113,16 +105,16 @@ feat: add deal pp
 
 ## ESLint и Prettier
 
-Для соблюдения единого стиля кода в проекте используются **ESLint** и **Prettier**. Убедитесь, что у вас установлены необходимые расширения и настройки для работы.
+To maintain a uniform code style, the project uses **ESLint** and **Prettier**. Make sure that you have the necessary extensions and settings installed to work.
 
-### Установка и настройка
+### Installation and configuration
 
-1. Установите расширения для VS Code:
+1. Install extensions for VS Code:
 
 - [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
 - [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
 
-2. Убедитесь, что в настройках редактора активированы следующие параметры:
+2. Make sure that the following settings are enabled in the editor settings:
 
 ```setting.json
 {
@@ -130,13 +122,13 @@ feat: add deal pp
 }
 ```
 
-3. Для запуска проверки кода вручную выполните:
+3. To run the code check manually, run:
 
 ```bash
 pnpm lint
 ```
 
-### Рекомендации для команды
+### Recommendations for the team
 
-- Настройте автоформатирование, чтобы избежать лишних изменений в коде.
-- Соблюдайте установленный стиль для сохранения читаемости кода.
+- Set up auto-formatting to avoid unnecessary changes to the code.
+- Follow the established style to keep the code readable.

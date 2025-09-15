@@ -26,128 +26,24 @@
 
 <script setup>
 import { themeConfig } from "@/app/providers/theme/themeConfig";
-import { usePageTitle } from "@/shared/hooks/usePageTitle";
-import kk from "date-fns/locale/kk";
-import { createLocale, dateRuRU, ruRU } from "naive-ui";
+import { ObserverLoader, ObserverNotification } from "@/shared/UI/observer";
+import { dateEnUS, dateRuRU, enUS, ruRU } from "naive-ui";
 import { computed, markRaw, ref, watchEffect } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRoute } from "vue-router";
 import AppLayoutAuth from "./AppLayoutAuth.vue";
 import AppLayoutClient from "./AppLayoutClient.vue";
-import { ObserverNotification, ObserverLoader } from "@/shared/UI/observer";
 
 const layout = ref();
 const route = useRoute();
 const { locale } = useI18n();
 
-const datekzKZ = { name: "kk-KZ", locale: kk };
-
-usePageTitle();
-
-const kzKZ = createLocale(
-  {
-    name: "kk-KZ",
-    global: {
-      undo: "Алдыңғы әрекетін болдырмау",
-      redo: "Қайтару",
-      confirm: "Растау",
-    },
-    Popconfirm: {
-      positiveText: "Растау",
-      negativeText: "Болдырмау",
-    },
-    Cascader: {
-      placeholder: "Таңдау",
-      loading: "Жүктелуде",
-      loadingRequiredMessage: (label) =>
-        `${label} аталған деттерді таңдау алдында жүктеу қажет`,
-    },
-    Time: {
-      dateFormat: "dd-MM-yyyy",
-      dateTimeFormat: "dd-MM-yyyy HH:mm:ss",
-    },
-    DatePicker: {
-      yearFormat: "yyyy",
-      monthFormat: "MMM",
-      dayFormat: "eeeeee",
-      clear: "Тазалау",
-      now: "Қазір",
-      confirm: "Растау",
-      selectTime: "Сағатты таңдау",
-      selectDate: "Күнді таңдау",
-      datePlaceholder: "Күнді таңдау",
-      datetimePlaceholder: "Күн және уақытты таңдау",
-      monthPlaceholder: "Айды таңдау",
-      yearPlaceholder: "Жылды таңдау",
-      startDatePlaceholder: "Басталу күні",
-      endDatePlaceholder: "Аяқталу күні",
-      startDatetimePlaceholder: "Басталу уақыты",
-      endDatetimePlaceholder: "Аяқталу уақыты",
-      monthBeforeYear: true,
-      firstDayOfWeek: 1,
-      today: "Бүгін",
-    },
-    DataTable: {
-      checkTableAll: "Барлықты таңдау",
-      uncheckTableAll: "Барлықты бас тарту",
-      confirm: "Растау",
-      clear: "Тазалау",
-    },
-    Transfer: {
-      sourceTitle: "Қайси",
-      targetTitle: "Неше",
-    },
-    Empty: {
-      description: "Деректер жоқ",
-    },
-    Select: {
-      placeholder: "Таңдау",
-    },
-    TimePicker: {
-      placeholder: "Уақытты таңдау",
-      positiveText: "OK",
-      negativeText: "Болдырмау",
-      now: "Қазір",
-    },
-    Pagination: {
-      goto: "Бару",
-      selectionSuffix: "бет",
-    },
-    DynamicTags: {
-      add: "Қосу",
-    },
-    Log: {
-      loading: "Жүктелуде",
-    },
-    Input: {
-      placeholder: "Кірістіру",
-    },
-    InputNumber: {
-      placeholder: "Кірістіру",
-    },
-    DynamicInput: {
-      create: "Жасау",
-    },
-    ThemeEditor: {
-      title: "Тақырып редакторы",
-      clearAllVars: "Барлық өрістерді тазалау",
-      clearSearch: "Іздеу тазалау",
-      filterCompName: "Компонент аты бойынша сүзу",
-      filterVarName: "Өрісте аты бойынша сүзу",
-      import: "Импорттау",
-      export: "Экспорттау",
-      restore: "Қалпына келтіру",
-    },
-  },
-  ruRU
-);
-
 const localeComp = computed(() => {
-  if (locale.value === "kz") {
+  if (locale.value === "en") {
     return {
-      code: "kk",
-      dateFormat: datekzKZ,
-      locale: kzKZ,
+      code: "en",
+      dateFormat: dateEnUS,
+      locale: enUS,
     };
   }
 
