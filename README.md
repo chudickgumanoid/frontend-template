@@ -1,5 +1,7 @@
 # @chdck/vue-template
 
+[![NPM version](https://img.shields.io/npm/v/@chdck/vue-template?color=de45db&label=)](https://www.npmjs.com/package/@chdck/vue-template)
+
 A CLI to quickly scaffold a Vite + Vue 3 frontend template. It generates a project structure with ready‑to‑use providers (Router, Pinia, i18n, Vue Query), Vite configuration, Tailwind v4, a Naive UI layer, and a set of helpful utilities. During setup you can opt out of subsystems (i18n, TanStack Query, SVG sprite, ESLint).
 
 – Node.js >= 18
