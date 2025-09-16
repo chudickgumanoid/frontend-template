@@ -1,7 +1,7 @@
 export const APP_NAME_PLACEHOLDER = '__APP_NAME__';
 
 export const UI = {
-  bannerTitle: 'chdck-vue-template',
+  bannerTitle: 'vue-temp',
   bannerSubtitle: 'Vite + Vue 3 frontend template',
   steps: {
     createDirs: '🔧 Creating directories',
